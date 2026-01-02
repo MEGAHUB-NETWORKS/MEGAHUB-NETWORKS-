@@ -1,67 +1,103 @@
 const Arena = {
-  roomCode: null,
-  isHost: false,
+  rooms: [],
+  currentRoom: null,
 
   init() {
+    this.refreshRooms();
     const urlParams = new URLSearchParams(window.location.search);
     const joinCode = urlParams.get('join');
-    if (joinCode) {
-      this.roomCode = joinCode;
-      this.launchRoom();
-    }
+    if (joinCode) this.joinRoom(joinCode);
   },
 
-  createRoom() {
-    this.roomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-    this.isHost = true;
-    this.launchRoom();
-  },
-
-  joinRoom() {
-    const code = document.getElementById('room-code-input').value;
-    if (code.length < 3) return MegaHub.showNotification("Invalid code");
-    this.roomCode = code.toUpperCase();
-    this.launchRoom();
+  refreshRooms() {
+    // Simulated active rooms
+    this.rooms = [
+      { id: 'MH-402', name: 'Neural Typers', players: 4, mode: 'Public' },
+      { id: 'MH-109', name: 'Grid Battles', players: 8, mode: 'Public' },
+      { id: 'MH-882', name: 'Logic Loop', players: 1, mode: 'Quick' }
+    ];
   },
 
   quickPlay() {
-    MegaHub.showNotification("Searching for public rooms...");
+    MegaHub.notify("Searching network nodes...");
     setTimeout(() => {
-      this.createRoom();
-      MegaHub.showNotification("No rooms found, created new public room.");
-    }, 1500);
+      const room = this.rooms[Math.floor(Math.random() * this.rooms.length)];
+      this.joinRoom(room.id);
+    }, 1200);
   },
 
-  launchRoom() {
+  createRoom() {
+    const code = 'MH-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+    this.joinRoom(code, true);
+  },
+
+  joinRoom(code, isHost = false) {
+    this.currentRoom = { id: code, isHost };
     document.getElementById('arena-lobby').style.display = 'none';
-    document.getElementById('room-view').style.display = 'block';
-    document.getElementById('display-room-code').textContent = this.roomCode;
-    this.simulateMatching();
-  },
-
-  simulateMatching() {
-    const playerList = document.getElementById('player-list');
-    const status = document.getElementById('match-status');
+    const roomView = document.getElementById('room-view');
+    roomView.style.display = 'block';
+    document.getElementById('room-title').textContent = `ARENA NODE: ${code}`;
     
-    setTimeout(() => {
-      const p = document.createElement('div');
-      p.style.cssText = 'display:flex; align-items:center; gap:8px; opacity:0; animation: fadeIn 0.5s forwards;';
-      p.innerHTML = '<div class="avatar-mini" style="width:24px; height:24px; background:#e11d48"></div><span>Bot_Player_1</span>';
-      playerList.appendChild(p);
-      MegaHub.showNotification("Bot_Player_1 joined the room.");
-    }, 2000);
-
-    setTimeout(() => {
-      status.textContent = "GET READY! STARTING IN 5...";
-      if (window.Sound) Sound.playBeep();
-    }, 4000);
+    this.renderPlayers(["You", "Stranger_42", "NetBot_Beta"]);
+    this.addSystemMsg(`Connected to Node ${code}`);
+    
+    if (isHost) {
+      this.addSystemMsg("You are the host. Share code to invite.");
+    }
   },
 
-  shareRoom() {
-    const url = `${window.location.origin}${window.location.pathname}?join=${this.roomCode}`;
-    navigator.clipboard.writeText(url).then(() => {
-      MegaHub.showNotification("Link copied to clipboard!");
-    });
+  renderPlayers(names) {
+    const list = document.getElementById('player-list');
+    if (!list) return;
+    list.innerHTML = names.map(n => `
+      <div class="glass" style="padding:10px; margin-bottom:8px; display:flex; items-center gap:10px">
+        <div class="avatar-mini" style="width:24px; height:24px"></div>
+        <span style="font-weight:bold; font-size:0.8rem">${n}</span>
+      </div>
+    `).join('');
+  },
+
+  addSystemMsg(txt) {
+    const box = document.getElementById('chat-messages');
+    if (!box) return;
+    const d = document.createElement('div');
+    d.style.cssText = 'font-size:0.75rem; color:#64748b; text-align:center; margin:15px 0; font-family:monospace;';
+    d.textContent = `[SYSTEM] > ${txt}`;
+    box.appendChild(d);
+  },
+
+  sendMsg() {
+    const input = document.getElementById('chat-input');
+    if (!input || !input.value.trim()) return;
+    
+    const box = document.getElementById('chat-messages');
+    const m = document.createElement('div');
+    m.className = 'chat-bubble self';
+    m.textContent = input.value;
+    box.appendChild(m);
+    
+    const val = input.value;
+    input.value = '';
+    box.scrollTop = box.scrollHeight;
+    
+    // Bot response simulation
+    setTimeout(() => {
+      const r = document.createElement('div');
+      r.className = 'chat-bubble other';
+      r.textContent = val.length > 5 ? "Data packet received." : "ACK.";
+      box.appendChild(r);
+      box.scrollTop = box.scrollHeight;
+      if (window.Sound) window.Sound.playLightClick();
+    }, 1000);
+  },
+
+  startPrivateChat() {
+    MegaHub.notify("Establishing secure 1-on-1 link...");
+    setTimeout(() => {
+      this.joinRoom("PRIVATE_NODE_X");
+    }, 1500);
   }
 };
+
+window.Arena = Arena;
 Arena.init();

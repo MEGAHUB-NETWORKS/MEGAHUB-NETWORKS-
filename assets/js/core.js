@@ -1,59 +1,59 @@
-// MegaHub Networks Core
-var RandomContent = {
+// MegaHub Networks Core System
+window.RandomContent = {
   facts: [
     "The first computer mouse was made of wood.",
     "90% of the world's currency is digital.",
     "A computer's speed is measured in Hertz.",
     "Python was named after Monty Python, not the snake.",
     "The first bug in history was a literal moth.",
-    "Email was invented before the World Wide Web.",
-    "The average gamer is 35 years old."
+    "The domain symbolics.com was the first registered .com.",
+    "The first ever website is still live today at CERN."
   ],
-  getFact() { return this.facts[Math.floor(Math.random() * this.facts.length)]; }
+  getFact() {
+    return this.facts[Math.floor(Math.random() * this.facts.length)];
+  }
 };
-window.RandomContent = RandomContent;
 
 const MegaHub = {
   state: {
     nickname: localStorage.getItem('mh_nick') || 'Guest_Player',
     xp: parseInt(localStorage.getItem('mh_xp')) || 0,
-    coins: parseInt(localStorage.getItem('mh_coins')) || 1000,
+    coins: parseInt(localStorage.getItem('mh_coins')) || 500,
     inventory: JSON.parse(localStorage.getItem('mh_inv')) || [],
-    equipped: JSON.parse(localStorage.getItem('mh_eq')) || { frame: null, glow: null, chat: 'default' },
+    equipped: JSON.parse(localStorage.getItem('mh_eq')) || { frame: null, glow: null, chat: 'standard' },
+    streak: parseInt(localStorage.getItem('mh_streak')) || 0,
     settings: JSON.parse(localStorage.getItem('mh_settings')) || {
-      sound: true, volume: 50, theme: 'dark', effects: true, season: 'stars'
+      sound: true, volume: 50, theme: 'dark', season: 'stars', effects: true
     }
   },
 
   init() {
     this.applySettings();
     this.updateUI();
-    this.bindGlobalEvents();
     this.checkDaily();
-    console.log("MegaHub Networks Online");
+    this.bindGlobalEvents();
+    console.log("MegaHub Core Online");
   },
 
   updateUI() {
     document.querySelectorAll('.user-nickname').forEach(el => {
       el.textContent = this.state.nickname;
-      if (this.state.equipped.glow === 'glow-blue') el.style.color = 'var(--neon-blue)';
+      if (this.state.equipped.glow === 'glow-blue') el.style.color = '#3b82f6';
       if (this.state.equipped.glow === 'glow-red') el.style.color = '#ef4444';
+      if (this.state.equipped.glow === 'glow-gold') el.style.color = '#fbbf24';
     });
     document.querySelectorAll('.user-coins').forEach(el => el.textContent = this.state.coins);
-    document.querySelectorAll('.user-level').forEach(el => el.textContent = Math.floor(this.state.xp / 500) + 1);
+    document.querySelectorAll('.user-level').forEach(el => el.textContent = Math.floor(this.state.xp / 1000) + 1);
     
-    // Apply Frames
+    // Apply frames
     const frameClass = this.state.equipped.frame ? `equipped-${this.state.equipped.frame}` : '';
     document.querySelectorAll('.avatar-mini').forEach(el => {
       el.className = `avatar-mini ${frameClass}`;
     });
-  },
 
-  addCoins(amt) {
-    this.state.coins += amt;
-    localStorage.setItem('mh_coins', this.state.coins);
-    this.updateUI();
-    this.notify(`+${amt} Coins!`);
+    // Update daily fact
+    const factEl = document.getElementById('daily-fact');
+    if (factEl) factEl.textContent = window.RandomContent.getFact();
   },
 
   addXP(amt) {
@@ -63,22 +63,35 @@ const MegaHub = {
     this.notify(`+${amt} XP!`);
   },
 
-  notify(txt) {
-    const n = document.createElement('div');
-    n.className = 'glass';
-    n.style.cssText = 'position:fixed; bottom:80px; left:50%; transform:translateX(-50%); padding:12px 24px; z-index:9999; border-left:4px solid var(--primary); pointer-events:none; font-weight:bold; animation: slide-up-fade 0.5s forwards;';
-    n.textContent = txt;
-    document.body.appendChild(n);
-    setTimeout(() => { n.style.opacity = '0'; setTimeout(() => n.remove(), 500); }, 3000);
+  addCoins(amt) {
+    this.state.coins += amt;
+    localStorage.setItem('mh_coins', this.state.coins);
+    this.updateUI();
+    this.notify(`+${amt} Coins! Earned`);
+  },
+
+  notify(msg) {
+    const toast = document.createElement('div');
+    toast.className = 'glass';
+    toast.style.cssText = 'position:fixed; bottom:80px; left:50%; transform:translateX(-50%); padding:12px 24px; z-index:9999; border-left:4px solid var(--primary); font-weight:bold; animation: slide-up-fade 0.5s forwards;';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      setTimeout(() => toast.remove(), 500);
+    }, 3000);
   },
 
   checkDaily() {
-    const last = localStorage.getItem('mh_last_daily');
+    const last = localStorage.getItem('mh_last_login');
     const today = new Date().toDateString();
     if (last !== today) {
-      localStorage.setItem('mh_last_daily', today);
-      this.addCoins(200);
-      this.notify("Daily Bonus: 200 Coins!");
+      this.state.streak++;
+      localStorage.setItem('mh_streak', this.state.streak);
+      localStorage.setItem('mh_last_login', today);
+      const bonus = 100 + (this.state.streak * 10);
+      this.addCoins(bonus);
+      this.notify(`Streak Day ${this.state.streak}! Bonus: ${bonus} Coins`);
     }
   },
 

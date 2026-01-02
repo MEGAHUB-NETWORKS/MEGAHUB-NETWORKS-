@@ -7,16 +7,13 @@
   --secondary-glow: rgba(168, 85, 247, 0.6);
   --accent: #22d3ee;
   --accent-glow: rgba(34, 211, 238, 0.6);
-  --glass: rgba(15, 23, 42, 0.75);
-  --glass-border: rgba(51, 65, 85, 0.6);
+  --glass: rgba(15, 23, 42, 0.85);
+  --glass-border: rgba(51, 65, 85, 0.5);
   --text-dark: #f1f5f9;
   --text-light: #0f172a;
-  --neon-blue: #3b82f6;
-  --neon-purple: #a855f7;
-  --neon-cyan: #22d3ee;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, color 0.3s, border-color 0.3s, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+* { box-sizing: border-box; margin: 0; padding: 0; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -25,6 +22,39 @@ body {
   overflow-x: hidden;
   min-height: 100vh;
   line-height: 1.5;
+}
+
+/* Dedicated Ad Spaces - Guaranteed no overlap */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-top: 72px; /* Header */
+  padding-bottom: 80px; /* Footer Nav */
+}
+
+.side-ad-rail {
+  width: 160px;
+  flex-shrink: 0;
+  padding: 10px;
+  display: none;
+}
+
+@media (min-width: 1440px) {
+  .side-ad-rail { display: block; }
+}
+
+.main-content {
+  flex: 1;
+  max-width: 1100px;
+  padding: 20px;
+  min-width: 0;
 }
 
 .glass {
@@ -37,13 +67,14 @@ body {
 
 .megahub-branding {
   font-weight: 950;
-  background: linear-gradient(135deg, var(--neon-blue), var(--neon-cyan), var(--neon-purple));
+  background: linear-gradient(135deg, #3b82f6, #22d3ee, #a855f7);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
 }
 
 .btn {
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 12px;
   font-weight: 900;
   cursor: pointer;
@@ -52,7 +83,6 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: all 0.2s;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -61,24 +91,46 @@ body {
 .btn-secondary { background: var(--secondary); color: white; }
 .btn-accent { background: var(--accent); color: #020617; }
 
-.btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
-.btn:active { transform: translateY(1px); }
-
-/* AVATAR FRAMES */
-.equipped-frame-neon { border: 4px solid var(--neon-cyan) !important; box-shadow: 0 0 15px var(--neon-cyan); }
-.equipped-frame-gold { border: 4px solid #fbbf24 !important; box-shadow: 0 0 15px #fbbf24; }
-
-/* CHAT BUBBLES */
-.chat-msg { padding: 8px 12px; border-radius: 14px; margin-bottom: 6px; max-width: 85%; font-size: 0.85rem; font-weight: 600; }
-.chat-msg.self { background: var(--primary); align-self: flex-end; color: white; border-bottom-right-radius: 2px; }
-.chat-msg.other { background: rgba(255,255,255,0.05); align-self: flex-start; color: #94a3b8; border-bottom-left-radius: 2px; }
-
-/* UTILS */
-.custom-scrollbar::-webkit-scrollbar { width: 4px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 10px; }
-
-@keyframes slide-up-fade {
-  from { opacity: 0; transform: translate(-50%, 20px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
+/* Avatar System */
+.avatar-container {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
 }
+
+.equipped-frame-neon { border: 4px solid var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan); }
+.equipped-frame-gold { border: 4px solid #fbbf24; box-shadow: 0 0 15px #fbbf24; }
+
+/* Ad Placeholder Styling */
+.ad-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ad-label {
+  font-size: 10px;
+  font-weight: 900;
+  color: #475569;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.2); border-radius: 10px; }
+
+@keyframes pulse-glow {
+  0% { filter: drop-shadow(0 0 5px var(--primary-glow)); }
+  50% { filter: drop-shadow(0 0 20px var(--primary-glow)); }
+  100% { filter: drop-shadow(0 0 5px var(--primary-glow)); }
+}
+
+.glow-animate { animation: pulse-glow 3s infinite ease-in-out; }

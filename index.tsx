@@ -40,16 +40,6 @@ const GAMES = [
   { id: 'snake', name: 'Snake Duel', icon: Gamepad2, color: 'text-cyan-400', desc: 'Grid Dominance' }
 ];
 
-// --- AD COMPONENTS ---
-const AdUnit = ({ type, height, width }: { type: string, height: number, width: number }) => (
-  <div className="ad-box my-4" style={{ height, width }}>
-    <span className="ad-label">Sponsored Node</span>
-    <div className="flex-1 w-full bg-slate-900/50 flex items-center justify-center">
-      <span className="text-[10px] text-slate-700 font-bold uppercase">{type}</span>
-    </div>
-  </div>
-);
-
 // --- COMPONENT: WEATHER SYSTEM ---
 const WeatherSystem = ({ type }: { type: string }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -209,7 +199,7 @@ const App = () => {
       <WeatherSystem type={season} />
       
       {/* GLOBAL HEADER */}
-      <header className="fixed top-[66px] w-full z-[1000] glass px-6 h-[72px] flex justify-between items-center">
+      <header className="fixed top-0 w-full z-[1000] glass px-6 h-[72px] flex justify-between items-center">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => { setView('dashboard'); setRoom(null); }}>
           <div className="p-1.5 bg-blue-500 rounded-lg shadow-lg shadow-blue-500/30"><Zap size={20} fill="white" stroke="white" /></div>
           <span className="megahub-branding text-2xl font-black tracking-tighter">MEGAHUB</span>
@@ -225,7 +215,7 @@ const App = () => {
         </div>
       </header>
 
-      <div className="content-wrapper pt-[148px]">
+      <div className="content-wrapper">
         {/* MAIN BODY */}
         <main className="main-content">
           <AnimatePresence mode="wait">

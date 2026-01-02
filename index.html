@@ -4,12 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MegaHub Networks | Play • Learn • Connect</title>
-    <link rel="stylesheet" href="assets/css/core.css">
-    <link rel="stylesheet" href="assets/css/games.css">
-    <link rel="stylesheet" href="assets/css/ads.css">
+    
+    <!-- CSS - Loaded First -->
+    <link rel="stylesheet" href="./assets/css/core.css">
+    <link rel="stylesheet" href="./assets/css/games.css">
+    <link rel="stylesheet" href="./assets/css/ads.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Essential Loader to prevent Black Screen during JS Init */
+        #system-loader {
+            position: fixed;
+            inset: 0;
+            background: #020617;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .loader-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(59, 130, 246, 0.1);
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+
 <script type="importmap">
 {
   "imports": {
@@ -26,10 +53,34 @@
 </head>
 <body class="bg-[#020617] text-slate-100">
 
-    <!-- TOP AD BAR: Static, scrolls with page, does NOT overlap dashboard -->
-    <div id="top-ad-zone" class="w-full flex flex-col items-center bg-slate-900/30 border-b border-white/5 py-2">
-        <span class="text-[8px] font-black text-slate-600 tracking-[0.3em] uppercase mb-1">Network Node Sponsor</span>
-        <div class="ad-container overflow-hidden min-h-[50px]">
+    <!-- Fallback Loader -->
+    <div id="system-loader">
+        <div class="loader-spinner"></div>
+        <p style="margin-top: 15px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #475569; letter-spacing: 2px;">INITIALIZING MEGAHUB...</p>
+    </div>
+
+    <!-- Layout Rails (Desktop Only) -->
+    <div class="ad-rail-desktop left-rail">
+        <div class="ad-container ad-160x600">
+            <script type="text/javascript">
+                atOptions = { 'key' : '3786c373fb067d1092814cd741ef7d0d', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };
+            </script>
+            <script type="text/javascript" src="https://www.highperformanceformat.com/3786c373fb067d1092814cd741ef7d0d/invoke.js"></script>
+        </div>
+    </div>
+
+    <div class="ad-rail-desktop right-rail">
+        <div class="ad-container ad-160x600">
+            <script type="text/javascript">
+                atOptions = { 'key' : '3786c373fb067d1092814cd741ef7d0d', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };
+            </script>
+            <script type="text/javascript" src="https://www.highperformanceformat.com/3786c373fb067d1092814cd741ef7d0d/invoke.js"></script>
+        </div>
+    </div>
+
+    <!-- Header Ad Zone -->
+    <div id="top-ad-zone" class="w-full flex justify-center py-2 bg-slate-900/30">
+        <div class="ad-container ad-320x50">
             <script type="text/javascript">
                 atOptions = { 'key' : '8b1e3d61861d1c17368c4fd4e1eecf52', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
             </script>
@@ -37,68 +88,48 @@
         </div>
     </div>
 
-    <!-- MAIN APPLICATION -->
+    <!-- MAIN APP CONTAINER -->
     <div id="root"></div>
 
-    <!-- BOTTOM AD GALLERY: Dedicated flexible space below all site content -->
-    <section id="bottom-ad-zone" class="w-full bg-slate-950 border-t border-slate-800/50 py-16 px-6 mt-12 pb-24">
-        <div class="max-w-[1400px] mx-auto">
-            <h2 class="text-[10px] font-black text-slate-700 tracking-[0.5em] uppercase mb-12 text-center">Global Sponsors & Advertisers</h2>
+    <!-- Footer Ad Stack -->
+    <footer id="bottom-ad-zone" class="w-full bg-slate-950 border-t border-slate-800/50 py-16 px-6 mt-12 pb-32">
+        <div class="max-w-[1400px] mx-auto flex flex-col items-center gap-10">
+            <h2 class="text-[10px] font-black text-slate-700 tracking-[0.5em] uppercase text-center">Sponsored Nodes</h2>
             
-            <div class="flex flex-wrap justify-center items-center gap-10">
-                <!-- 160x600 Rails -->
-                <div class="ad-container border border-white/5 bg-slate-900/50 rounded-xl overflow-hidden shadow-2xl">
+            <!-- 728x90 Banner -->
+            <div class="ad-container ad-728x90 border border-white/5 bg-slate-900/50 rounded-xl overflow-hidden shadow-2xl">
+                <script type="text/javascript">
+                    atOptions = { 'key' : 'ca62188f74ef0038211200819287107d', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/ca62188f74ef0038211200819287107d/invoke.js"></script>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-10">
+                <div class="ad-container ad-300x250 border border-white/5 bg-slate-900/50 rounded-xl overflow-hidden shadow-2xl">
                     <script type="text/javascript">
-                        atOptions = { 'key' : '3786c373fb067d1092814cd741ef7d0d', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };
+                        atOptions = { 'key' : '4f52a4b1f5dba3d1b6bf80d44634631d', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                     </script>
-                    <script type="text/javascript" src="https://www.highperformanceformat.com/3786c373fb067d1092814cd741ef7d0d/invoke.js"></script>
+                    <script type="text/javascript" src="https://www.highperformanceformat.com/4f52a4b1f5dba3d1b6bf80d44634631d/invoke.js"></script>
                 </div>
-
-                <div class="flex flex-col items-center gap-10">
-                    <!-- 728x90 Banner -->
-                    <div class="ad-container border border-white/5 bg-slate-900/50 rounded-xl overflow-hidden shadow-2xl">
-                        <script type="text/javascript">
-                            atOptions = { 'key' : 'ca62188f74ef0038211200819287107d', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
-                        </script>
-                        <script type="text/javascript" src="https://www.highperformanceformat.com/ca62188f74ef0038211200819287107d/invoke.js"></script>
-                    </div>
-                    
-                    <div class="flex flex-wrap justify-center gap-10">
-                         <!-- 300x250 Banner -->
-                        <div class="ad-container border border-white/5 bg-slate-900/50 rounded-xl overflow-hidden shadow-2xl">
-                            <script type="text/javascript">
-                                atOptions = { 'key' : '4f52a4b1f5dba3d1b6bf80d44634631d', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
-                            </script>
-                            <script type="text/javascript" src="https://www.highperformanceformat.com/4f52a4b1f5dba3d1b6bf80d44634631d/invoke.js"></script>
-                        </div>
-                        
-                        <!-- 468x60 Banner -->
-                        <div class="ad-container border border-white/5 bg-slate-900/50 rounded-xl overflow-hidden shadow-2xl">
-                            <script type="text/javascript">
-                                atOptions = { 'key' : 'c992751dba51ea4600c3e3b94c90b0af', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
-                            </script>
-                            <script type="text/javascript" src="https://www.highperformanceformat.com/c992751dba51ea4600c3e3b94c90b0af/invoke.js"></script>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 160x600 Rail -->
-                <div class="ad-container border border-white/5 bg-slate-900/50 rounded-xl overflow-hidden shadow-2xl">
+                <div class="ad-container ad-468x60 border border-white/5 bg-slate-900/50 rounded-xl overflow-hidden shadow-2xl">
                     <script type="text/javascript">
-                        atOptions = { 'key' : '3786c373fb067d1092814cd741ef7d0d', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };
+                        atOptions = { 'key' : 'c992751dba51ea4600c3e3b94c90b0af', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
                     </script>
-                    <script type="text/javascript" src="https://www.highperformanceformat.com/3786c373fb067d1092814cd741ef7d0d/invoke.js"></script>
+                    <script type="text/javascript" src="https://www.highperformanceformat.com/c992751dba51ea4600c3e3b94c90b0af/invoke.js"></script>
                 </div>
             </div>
         </div>
-    </section>
+    </footer>
 
-    <!-- Adsterra Social Bar: Floats safely at bottom, does not hide interactive elements -->
-    <script type='text/javascript' src='//pl28380256.effectivegatecpm.com/f6/1a/42/f61a4274586f36ba796ad9362c93a165.js'></script>
+    <!-- JS Core Libs - High Priority -->
+    <script src="./assets/js/core.js"></script>
+    <script src="./assets/js/sound.js"></script>
+    <script src="./assets/js/effects.js"></script>
     
-    <!-- Core Application -->
-    <script src="assets/js/core.js"></script>
-    <script src="assets/js/sound.js"></script>
+    <!-- React App Init -->
     <script type="module" src="./index.tsx"></script>
+
+    <!-- Social Bar Ad - Low Priority -->
+    <script type='text/javascript' src='//pl28380256.effectivegatecpm.com/f6/1a/42/f61a4274586f36ba796ad9362c93a165.js' defer></script>
 </body>
 </html>

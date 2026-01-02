@@ -101,7 +101,7 @@ const SkribblEngine = ({ room, onWin }: { room: Room, onWin: (c: number) => void
 
   const handleGuess = () => {
     if (guess.toLowerCase() === 'robot') {
-      confetti(); setGuess(''); (window as any).MegaHub.addCoins(250); onWin(250);
+      confetti(); setGuess(''); (window as any).MegaHub?.addCoins(250); onWin(250);
     } else { (window as any).Sound?.playWrong(); }
   };
 
@@ -150,23 +150,33 @@ const App = () => {
   const [room, setRoom] = useState<Room | null>(null);
   const [season, setSeason] = useState('stars');
   const [diagnostics, setDiagnostics] = useState<{ name: string; status: 'ok' | 'fail' | 'pending' }[]>([]);
-  const [headerTop, setHeaderTop] = useState(0);
+
+  // Dismiss loader once React takes over
+  useEffect(() => {
+    const loader = document.getElementById('system-loader');
+    if (loader) {
+      loader.style.opacity = '0';
+      setTimeout(() => loader.remove(), 500);
+    }
+  }, []);
 
   // Sync state with global logic
   useEffect(() => {
     const sync = () => {
       const s = (window as any).MegaHub?.state;
       if (s) {
-        setUser({ name: s.nickname, coins: s.coins, xp: s.xp, level: Math.floor(s.xp / 1000) + 1, inventory: s.inventory, equipped: s.equipped });
-        setSeason(s.settings.season);
+        setUser({ 
+          name: s.nickname, 
+          coins: s.coins, 
+          xp: s.xp, 
+          level: Math.floor(s.xp / 1000) + 1, 
+          inventory: s.inventory || [], 
+          equipped: s.equipped || {} 
+        });
+        setSeason(s.settings?.season || 'stars');
       }
     };
     const i = setInterval(sync, 1000);
-
-    // Dynamic header position adjustment based on top ad presence
-    const topAd = document.getElementById('top-ad-zone');
-    if (topAd) setHeaderTop(topAd.offsetHeight);
-
     return () => clearInterval(i);
   }, []);
 
@@ -176,13 +186,13 @@ const App = () => {
     tests.forEach((t, i) => {
       setTimeout(() => {
         setDiagnostics(prev => prev.map(p => p.name === t ? { ...p, status: 'ok' } : p));
-        if (i === tests.length - 1) (window as any).MegaHub.notify("System Integrity Confirmed.");
+        if (i === tests.length - 1) (window as any).MegaHub?.notify("System Integrity Confirmed.");
       }, 400 * (i + 1));
     });
   };
 
   const joinQuick = () => {
-    (window as any).MegaHub.notify("Node search active...");
+    (window as any).MegaHub?.notify("Node search active...");
     setTimeout(() => {
       setRoom({
         id: 'NODE-' + Math.random().toString(36).substring(2, 6).toUpperCase(),
@@ -199,14 +209,11 @@ const App = () => {
   };
 
   return (
-    <div className="app-shell">
+    <div className="app-shell relative z-[1000]">
       <WeatherSystem type={season} />
       
-      {/* GLOBAL HEADER - Positioned relatively if top ad is active, or fixed at top */}
-      <header 
-        className="fixed left-0 w-full z-[1000] glass px-6 h-[72px] flex justify-between items-center transition-all duration-300"
-        style={{ top: `${headerTop}px` }}
-      >
+      {/* GLOBAL HEADER */}
+      <header className="fixed top-0 w-full z-[2000] glass px-6 h-[72px] flex justify-between items-center">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => { setView('dashboard'); setRoom(null); }}>
           <div className="p-1.5 bg-blue-500 rounded-lg shadow-lg shadow-blue-500/30"><Zap size={20} fill="white" stroke="white" /></div>
           <span className="megahub-branding text-2xl font-black tracking-tighter">MEGAHUB</span>
@@ -216,7 +223,7 @@ const App = () => {
             <Coins size={16} /> {user.coins}
           </div>
           <div className="profile-chip glass p-1 px-4 flex items-center gap-3 cursor-pointer group" onClick={() => setView('profile')}>
-            <div className={`w-8 h-8 rounded-full bg-slate-800 avatar-container ${user.equipped.frame ? 'equipped-' + user.equipped.frame : ''}`} />
+            <div className={`w-8 h-8 rounded-full bg-slate-800 avatar-container ${user.equipped?.frame ? 'equipped-' + user.equipped.frame : ''}`} />
             <span className="text-sm font-black hidden sm:block group-hover:text-blue-400 transition-colors">{user.name}</span>
           </div>
         </div>
@@ -306,11 +313,11 @@ const App = () => {
                         </div>
                         <div className="flex gap-2">
                           <span className="glass px-4 py-2 text-xs font-mono text-blue-400">NODE ID: {room.id}</span>
-                          <button onClick={() => (window as any).MegaHub.notify("Link Copied")} className="btn btn-secondary p-2 px-4"><Share2 size={16} /></button>
+                          <button onClick={() => (window as any).MegaHub?.notify("Link Copied")} className="btn btn-secondary p-2 px-4"><Share2 size={16} /></button>
                         </div>
                       </div>
                       <div className="glass p-1 border-slate-800 bg-black/40 overflow-hidden">
-                        <SkribblEngine room={room} onWin={(c) => (window as any).MegaHub.notify(`Success: +${c} Credits`)} />
+                        <SkribblEngine room={room} onWin={(c) => (window as any).MegaHub?.notify(`Success: +${c} Credits`)} />
                       </div>
                     </div>
                     <aside className="space-y-6">
@@ -369,7 +376,7 @@ const App = () => {
                           <div className="absolute inset-0" style={{ border: `3px solid ${item.color}`, opacity: 0.3 }} />
                         </div>
                         <h4 className="font-black text-sm uppercase tracking-tighter">{item.name}</h4>
-                        <button onClick={() => (window as any).Shop.handleAction(item.id)} className={`btn w-full text-xs font-black ${owned ? 'btn-secondary' : 'btn-primary'}`}>
+                        <button onClick={() => (window as any).Shop?.handleAction(item.id)} className={`btn w-full text-xs font-black ${owned ? 'btn-secondary' : 'btn-primary'}`}>
                           {owned ? 'EQUIP' : `🪙 ${item.price}`}
                         </button>
                       </div>
@@ -382,7 +389,7 @@ const App = () => {
             {view === 'profile' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} key="profile" className="max-w-4xl mx-auto space-y-8">
                 <div className="glass p-10 flex flex-col md:flex-row items-center gap-10 bg-slate-900/40">
-                  <div className={`w-40 h-40 rounded-full bg-slate-800 flex items-center justify-center border-4 border-blue-500/30 avatar-container ${user.equipped.frame ? 'equipped-' + user.equipped.frame : ''}`}>
+                  <div className={`w-40 h-40 rounded-full bg-slate-800 flex items-center justify-center border-4 border-blue-500/30 avatar-container ${user.equipped?.frame ? 'equipped-' + user.equipped.frame : ''}`}>
                     <User size={64} className="text-slate-600" />
                     <div className="absolute -bottom-2 -right-2 bg-yellow-500 text-black px-4 py-1 rounded-full font-black text-xs">LEVEL {user.level}</div>
                   </div>
@@ -413,7 +420,7 @@ const App = () => {
                           onChange={(e) => {
                             const val = e.target.value;
                             setSeason(val);
-                            (window as any).MegaHub.updateSetting('season', val);
+                            (window as any).MegaHub?.updateSetting('season', val);
                           }}
                           className="glass p-2 bg-transparent text-xs outline-none border-slate-700"
                         >
@@ -425,9 +432,6 @@ const App = () => {
                       </div>
                       <button onClick={() => { localStorage.clear(); location.reload(); }} className="btn btn-accent w-full text-xs font-black">SYSTEM REBOOT (RESET)</button>
                     </div>
-                  </div>
-                  <div className="glass p-8 flex flex-col items-center justify-center text-center">
-                     <p className="text-xs text-slate-600 italic">Advanced Configuration Panel</p>
                   </div>
                 </div>
               </motion.div>
@@ -458,7 +462,7 @@ const App = () => {
       </div>
 
       {/* MOBILE BOTTOM NAV */}
-      <nav className="fixed bottom-0 w-full glass z-[1001] border-t border-white/10 h-[72px] flex justify-around items-center px-4">
+      <nav className="fixed bottom-0 w-full glass z-[2000] border-t border-white/10 h-[72px] flex justify-around items-center px-4">
         {[
           { id: 'dashboard', icon: Layout, label: 'Hub' },
           { id: 'arena', icon: Globe, label: 'Arena' },
@@ -480,19 +484,23 @@ const App = () => {
   );
 };
 
-// --- INITIALIZATION ---
+// --- ROBUST INITIALIZATION ---
 const initApp = () => {
   const container = document.getElementById('root');
   if (container) {
-    const root = createRoot(container);
-    root.render(<App />);
-    console.log("%cMEGAHUB NETWORKS %cONLINE", "color: #3b82f6; font-weight: 900; font-size: 20px;", "color: #10b981; font-weight: 900; font-size: 20px;");
+    try {
+      const root = createRoot(container);
+      root.render(<App />);
+      console.log("%cMEGAHUB NETWORKS %cONLINE", "color: #3b82f6; font-weight: 900; font-size: 20px;", "color: #10b981; font-weight: 900; font-size: 20px;");
+    } catch (err) {
+      console.error("Critical React Mount Error:", err);
+    }
   } else {
-    console.error("Critical Failure: Root node not found.");
+    console.error("Fatal Error: Root target #root missing in DOM.");
   }
 };
 
-// Use document.readyState check to handle deferred execution in ESM
+// Handle ES module defer timing correctly
 if (document.readyState === 'loading') {
   window.addEventListener('DOMContentLoaded', initApp);
 } else {

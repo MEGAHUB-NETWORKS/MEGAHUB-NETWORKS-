@@ -3,86 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega Hub | The Arena</title>
+    <title>MegaHub | The Arena</title>
     <link rel="stylesheet" href="assets/css/core.css">
     <link rel="stylesheet" href="assets/css/ads.css">
 </head>
 <body>
     <div class="bg-grid"></div>
-    <canvas id="weather-canvas"></canvas>
-
     <header class="glass">
-        <div class="logo" onclick="location.href='index.html'">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="2" y="2" width="20" height="20" rx="4"/><path d="M7 12h10M12 7v10"/></svg>
-            <span>MEGA HUB</span>
-        </div>
-        <div class="profile-chip glass" onclick="location.href='profile.html'">
-            <div class="avatar-mini"></div>
-            <span class="user-nickname">Gamer</span>
-        </div>
+        <div class="logo" onclick="location.href='index.html'"><span>MEGAHUB</span></div>
+        <div class="profile-chip glass" onclick="location.href='profile.html'"><div class="avatar-mini"></div></div>
     </header>
 
     <main>
         <div id="arena-lobby">
-            <h1 class="section-title"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="color:var(--accent)"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> THE ARENA</h1>
-            
+            <h1 class="section-title">THE ARENA</h1>
             <div class="grid-layout">
-                <div class="glass" style="padding:24px; display:flex; flex-direction:column; gap:16px">
-                    <h3>CREATE ROOM</h3>
-                    <p style="font-size:0.9rem; color:#94a3b8">Host your own room and invite friends to compete in word games.</p>
-                    <button class="btn btn-primary" onclick="Arena.createRoom()">CREATE NEW LOBBY</button>
+                <div class="card glass">
+                    <h3>QUICK MATCH</h3>
+                    <p>Auto-connect to the next available room.</p>
+                    <button class="btn btn-primary w-full mt-4" onclick="Arena.quickPlay()">FIND GAME</button>
                 </div>
-                <div class="glass" style="padding:24px; display:flex; flex-direction:column; gap:16px">
-                    <h3>JOIN ROOM</h3>
-                    <p style="font-size:0.9rem; color:#94a3b8">Enter a room code to join an existing game lobby.</p>
-                    <div style="display:flex; gap:8px">
-                        <input type="text" id="room-code-input" class="glass" placeholder="CODE" style="width:100px; padding:8px; outline:none; color:white">
-                        <button class="btn btn-secondary" onclick="Arena.joinRoom()">JOIN</button>
-                    </div>
-                </div>
-                <div class="glass" style="padding:24px; display:flex; flex-direction:column; gap:16px">
-                    <h3>QUICK PLAY</h3>
-                    <p style="font-size:0.9rem; color:#94a3b8">Matchmaking with random players currently in the lobby.</p>
-                    <button class="btn btn-secondary" onclick="Arena.quickPlay()">FIND MATCH</button>
+                <div class="card glass">
+                    <h3>PRIVATE CHAT</h3>
+                    <p>Connect 1-on-1 with a random user.</p>
+                    <button class="btn btn-secondary w-full mt-4" onclick="Arena.startPrivateChat()">START CHAT</button>
                 </div>
             </div>
-
-            <div class="ad-placeholder" data-type="300x250" data-ad-level="1"></div>
         </div>
 
         <div id="room-view" style="display:none">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
-                <h1 class="section-title" style="margin-bottom:0">ROOM: <span id="display-room-code" style="color:var(--primary)">CODE</span></h1>
+                <h2 id="room-title">ROOM</h2>
                 <button class="btn glass" onclick="location.reload()">LEAVE</button>
             </div>
-
             <div style="display:grid; grid-template-columns: 1fr 300px; gap:20px">
-                <div class="glass" style="padding:40px; min-height:400px; display:flex; flex-direction:column; align-items:center; justify-content:center">
-                    <div id="match-status" style="font-size:1.5rem; font-weight:bold; margin-bottom:20px">WAITING FOR PLAYERS...</div>
-                    <div id="room-actions">
-                        <button class="btn btn-primary" onclick="Arena.shareRoom()">SHARE LINK</button>
-                    </div>
-                    <div id="arena-game-area" style="display:none; width:100%">
-                        <!-- Game content -->
+                <div class="glass" style="height:500px; display:flex; flex-direction:column">
+                    <div id="chat-messages" style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column"></div>
+                    <div style="padding:15px; border-top:1px solid rgba(255,255,255,0.1); display:flex; gap:10px">
+                        <input type="text" id="chat-input" class="glass" style="flex:1; padding:10px; color:white; outline:none" placeholder="Type a message...">
+                        <button class="btn btn-primary" onclick="Arena.sendMsg()">SEND</button>
                     </div>
                 </div>
-
-                <div class="glass" style="padding:15px; display:flex; flex-direction:column">
-                    <h4 style="margin-bottom:15px">PLAYERS (1/10)</h4>
-                    <div id="player-list" style="display:flex; flex-direction:column; gap:8px; flex:1">
-                        <div style="display:flex; align-items:center; gap:8px">
-                            <div class="avatar-mini" style="width:24px; height:24px"></div>
-                            <span class="user-nickname">YOU (HOST)</span>
-                        </div>
-                    </div>
-                    <div class="ad-placeholder" data-type="300x250" data-ad-level="2"></div>
+                <div class="glass" style="padding:20px">
+                    <h4>PLAYERS</h4>
+                    <div id="player-list" class="mt-4"></div>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="assets/js/core.js" defer></script>
-    <script src="assets/js/arena.js" defer></script>
-    <script src="assets/js/ads.js" defer></script>
+    <script src="assets/js/core.js"></script>
+    <script src="assets/js/arena.js"></script>
+    <script>
+        const Arena = {
+            isPrivate: false,
+            quickPlay() {
+                MegaHub.notify("Matching...");
+                setTimeout(() => {
+                    document.getElementById('arena-lobby').style.display='none';
+                    document.getElementById('room-view').style.display='block';
+                    document.getElementById('room-title').textContent = "PUBLIC LOBBY #402";
+                    this.addSystemMsg("Connected to Global Arena");
+                    this.renderPlayers(["You", "Bot_1", "Bot_2"]);
+                }, 1500);
+            },
+            startPrivateChat() {
+                MegaHub.notify("Searching for partner...");
+                setTimeout(() => {
+                    document.getElementById('arena-lobby').style.display='none';
+                    document.getElementById('room-view').style.display='block';
+                    document.getElementById('room-title').textContent = "PRIVATE CHAT (SECURE)";
+                    this.addSystemMsg("Connected with Stranger_722");
+                    this.renderPlayers(["You", "Stranger_722"]);
+                    this.isPrivate = true;
+                }, 2000);
+            },
+            renderPlayers(names) {
+                const list = document.getElementById('player-list');
+                list.innerHTML = names.map(n => `<div style="margin-bottom:8px">🟢 ${n}</div>`).join('');
+            },
+            addSystemMsg(txt) {
+                const box = document.getElementById('chat-messages');
+                const d = document.createElement('div');
+                d.style.cssText = 'font-size:0.8rem; color:#94a3b8; text-align:center; margin:10px 0;';
+                d.textContent = txt;
+                box.appendChild(d);
+            },
+            sendMsg() {
+                const input = document.getElementById('chat-input');
+                if(!input.value) return;
+                const box = document.getElementById('chat-messages');
+                const m = document.createElement('div');
+                m.className = 'chat-msg chat-msg-self';
+                m.textContent = input.value;
+                box.appendChild(m);
+                input.value = '';
+                box.scrollTop = box.scrollHeight;
+                
+                // Bot Response
+                setTimeout(() => {
+                    const r = document.createElement('div');
+                    r.className = 'chat-msg chat-msg-other';
+                    r.textContent = "Nice! Ready for a typing race?";
+                    box.appendChild(r);
+                    box.scrollTop = box.scrollHeight;
+                }, 1000);
+            }
+        };
+    </script>
 </body>
 </html>

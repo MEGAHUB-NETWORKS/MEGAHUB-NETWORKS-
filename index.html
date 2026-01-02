@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega Hub | Ultimate Gaming Hub</title>
+    <title>MegaHub Networks | Play • Learn • Connect</title>
     <link rel="stylesheet" href="assets/css/core.css">
     <link rel="stylesheet" href="assets/css/ads.css">
 <script type="importmap">
@@ -11,11 +11,10 @@
   "imports": {
     "react/": "https://esm.sh/react@^19.2.3/",
     "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react-dom/client": "https://esm.sh/react-dom@^19.2.3/client",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
     "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
-    "framer-motion": "https://esm.sh/framer-motion@^12.23.26"
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "framer-motion": "https://esm.sh/framer-motion@^12.23.26",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
   }
 }
 </script>
@@ -28,97 +27,118 @@
 
     <header class="glass">
         <div class="logo" onclick="location.href='index.html'">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="2" y="2" width="20" height="20" rx="4"/><path d="M7 12h10M12 7v10"/></svg>
-            <span>MEGA HUB</span>
-        </div>
-        <div class="search-bar">
-            <input type="text" id="global-search-input" placeholder="Search games, courses, stories...">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="color:var(--primary)"><rect x="2" y="2" width="20" height="20" rx="4"/><path d="M7 12h10M12 7v10"/></svg>
+            <span class="megahub-branding">MEGAHUB</span>
         </div>
         <nav class="nav-desktop">
             <a href="games.html" class="nav-link">GAMES</a>
             <a href="arena.html" class="nav-link">ARENA</a>
-            <a href="learn.html" class="nav-link">LEARN</a>
-            <a href="shop.html" class="nav-link">SHOP</a>
+            <a href="learn.html" class="nav-link">ACADEMY</a>
+            <a href="shop.html" class="nav-link">MARKET</a>
+            <a href="stories.html" class="nav-link">STORIES</a>
         </nav>
-        <div class="flex items-center gap-4">
-            <div class="hidden sm:flex glass px-3 py-1 rounded-full items-center gap-2 border-yellow-500/20">
-                <span class="text-yellow-500">🪙</span>
-                <span class="user-coins font-bold">0</span>
-            </div>
+        <div style="display:flex; align-items:center; gap:12px">
+            <div class="glass" style="padding:4px 12px; border-radius:20px; font-weight:bold; color:#fbbf24">🪙 <span class="user-coins">0</span></div>
             <div class="profile-chip glass" onclick="location.href='profile.html'">
                 <div class="avatar-mini"></div>
-                <span class="user-nickname">Gamer</span>
+                <span class="user-nickname" style="font-weight:700">Guest</span>
             </div>
-            <button id="menu-toggle" class="btn lg:hidden" style="padding:4px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+            <button id="menu-toggle" class="btn" style="padding:8px; background:rgba(255,255,255,0.1); border-radius:10px; display:flex"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
         </div>
     </header>
 
     <div id="sidebar-overlay" class="sidebar-overlay"></div>
     <aside id="sidebar" class="sidebar glass">
-        <div style="display:flex; justify-content:space-between; margin-bottom:30px">
-            <h2 style="color:var(--primary)">MENU</h2>
-            <button class="btn" onclick="document.getElementById('sidebar-overlay').click()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+        <h2 style="margin-bottom:24px">COMMAND CENTER</h2>
+        <div style="display:flex; flex-direction:column; gap:8px">
+            <a href="index.html" class="nav-link">Dashboard</a>
+            <a href="games.html" class="nav-link">Games Hub</a>
+            <a href="arena.html" class="nav-link">The Arena</a>
+            <a href="learn.html" class="nav-link">Learning Lab</a>
+            <a href="shop.html" class="nav-link">Virtual Shop</a>
+            <a href="stories.html" class="nav-link">Story Engine</a>
+            <a href="tools.html" class="nav-link">Utilities</a>
+            <a href="profile.html" class="nav-link">User Profile</a>
         </div>
-        <nav style="display:flex; flex-direction:column; gap:8px">
-            <a href="index.html" class="nav-link" style="padding:12px; font-size:1.1rem">Home</a>
-            <a href="games.html" class="nav-link" style="padding:12px; font-size:1.1rem">Games Hub</a>
-            <a href="arena.html" class="nav-link" style="padding:12px; font-size:1.1rem">The Arena</a>
-            <a href="learn.html" class="nav-link" style="padding:12px; font-size:1.1rem">Academy</a>
-            <a href="shop.html" class="nav-link" style="padding:12px; font-size:1.1rem">Market</a>
-            <a href="profile.html" class="nav-link" style="padding:12px; font-size:1.1rem">Settings</a>
-        </nav>
+        <div class="ad-placeholder" data-type="300x250" style="margin-top:auto"></div>
     </aside>
 
     <main>
-        <div class="ad-placeholder" data-type="728x90" data-ad-level="1"></div>
+        <!-- Branding Section -->
+        <section class="hero-dashboard">
+            <div class="glass carousel-container">
+                <div class="carousel-slide" id="main-carousel">
+                    <div class="carousel-item" style="background: linear-gradient(135deg, rgba(59,130,246,0.2), transparent);">
+                        <h1 class="megahub-branding" style="font-size:3rem; margin-bottom:10px">MEGAHUB NETWORKS</h1>
+                        <p class="subtext-animate" style="font-size:1.2rem; color:var(--neon-cyan); margin-bottom:20px">Play • Learn • Connect</p>
+                        <p style="color:#94a3b8; max-width:400px; margin-bottom:30px">The next generation gaming platform is here. Experience high-speed interaction and unified aesthetics.</p>
+                        <a href="games.html" class="btn btn-primary" style="width:fit-content">EXPLORE GAMES</a>
+                    </div>
+                    <div class="carousel-item" style="background: linear-gradient(135deg, rgba(168,85,247,0.2), transparent);">
+                        <h1 style="font-size:3rem; margin-bottom:10px; font-weight:900">ACADEMY PRO</h1>
+                        <p style="font-size:1.2rem; color:var(--secondary); margin-bottom:20px">Master the Digital Arts</p>
+                        <p style="color:#94a3b8; max-width:400px; margin-bottom:30px">Access 50+ deep-dive courses with interactive quizzes and career-ready knowledge.</p>
+                        <a href="learn.html" class="btn btn-primary" style="width:fit-content; background:var(--secondary)">START LEARNING</a>
+                    </div>
+                </div>
+            </div>
+            <div class="glass" style="padding:24px">
+                <h3 style="margin-bottom:20px; font-weight:900">ARENA STATUS</h3>
+                <div style="display:flex; flex-direction:column; gap:12px">
+                    <div class="glass" style="padding:12px; display:flex; justify-content:space-between">
+                        <span>Active Rooms</span><span style="color:var(--neon-cyan); font-weight:800">142</span>
+                    </div>
+                    <div class="glass" style="padding:12px; display:flex; justify-content:space-between">
+                        <span>Players Online</span><span style="color:var(--neon-purple); font-weight:800">4,102</span>
+                    </div>
+                    <div class="glass" style="padding:12px; display:flex; justify-content:space-between">
+                        <span>Next Tournament</span><span style="color:var(--primary); font-weight:800">02:14:55</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="width:100%; margin-top:20px; background:linear-gradient(90deg, #ef4444, #f87171)" onclick="location.href='arena.html'">JOIN ARENA</button>
+            </div>
+        </section>
 
-        <section style="margin-bottom:60px">
-            <div class="glass" style="padding:40px; border-left: 6px solid var(--primary); background: linear-gradient(90deg, var(--glass), rgba(59,130,246,0.1))">
-                <h1 style="font-size:clamp(2rem, 5vw, 3.5rem); font-weight:900; line-height:1.1">WELCOME TO THE<br><span style="color:var(--primary)">NEXT DIMENSION</span></h1>
-                <p style="margin:20px 0; color:#94a3b8; max-width:600px">Experience professional gaming, deep-dive learning, and AI interaction all in one unified hub. Level up your skills every single day.</p>
-                <div style="display:flex; gap:12px; flex-wrap:wrap">
-                    <a href="games.html" class="btn btn-primary">START PLAYING</a>
-                    <a href="shop.html" class="btn btn-secondary">VISIT SHOP</a>
+        <div class="ad-placeholder" data-type="728x90"></div>
+
+        <section style="margin-bottom:40px">
+            <h2 class="section-title" style="margin-bottom:20px">LATEST STORIES</h2>
+            <div class="grid-layout">
+                <div class="card glass" onclick="location.href='stories.html?id=scifi'">
+                    <h3 style="color:var(--neon-cyan)">The Binary Void</h3>
+                    <p style="font-size:0.9rem; color:#94a3b8; margin:8px 0">Chapter 4 released: A journey into the core of the megahub grid.</p>
+                </div>
+                <div class="card glass" onclick="location.href='stories.html?id=horror'">
+                    <h3 style="color:#ef4444">Glitch in the Code</h3>
+                    <p style="font-size:0.9rem; color:#94a3b8; margin:8px 0">Something is lurking in the background processes...</p>
                 </div>
             </div>
         </section>
 
-        <h2 class="section-title"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="color:var(--primary)"><path d="M12 2v20M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg> FEATURED MODULES</h2>
-        <div class="grid-layout">
-            <div class="card glass" onclick="location.href='games.html?game=typing'">
-                <h3 style="color:var(--primary)">Typing Master</h3>
-                <p style="font-size:0.9rem; color:#94a3b8; margin:8px 0">Beat the clock and measure your WPM with technical paragraphs.</p>
-            </div>
-            <div class="card glass" onclick="location.href='shop.html'">
-                <h3 style="color:var(--secondary)">Virtual Shop</h3>
-                <p style="font-size:0.9rem; color:#94a3b8; margin:8px 0">Spend your earned coins on exclusive profile customizers.</p>
-            </div>
-            <div class="card glass" onclick="location.href='arena.html'">
-                <h3 style="color:var(--accent)">Arena Pro</h3>
-                <p style="font-size:0.9rem; color:#94a3b8; margin:8px 0">Join local multiplayer rooms for word challenges and trivia.</p>
-            </div>
-        </div>
+        <div class="ad-placeholder" data-type="468x60"></div>
 
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin-bottom:100px">
+        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:20px">
             <div class="glass" style="padding:24px">
-                <h4 style="margin-bottom:15px; font-weight:bold; color:var(--primary)">DAILY CHALLENGE</h4>
-                <div id="daily-fact" style="font-size:0.9rem; line-height:1.6; color:#94a3b8">...</div>
-                <button class="btn btn-primary" style="margin-top:20px; width:100%; font-size:0.8rem" onclick="window.location.href='https://www.effectivegatecpm.com/u4x97iz6?key=6a5487414458b848a32026ced886c85d'">CLAIM XP BONUS</button>
+                <h3 style="margin-bottom:20px">DAILY CHALLENGE</h3>
+                <p id="daily-fact" style="font-size:1.1rem; line-height:1.6; color:#cbd5e1"></p>
+                <button class="btn btn-primary" style="margin-top:20px" onclick="location.href='https://www.effectivegatecpm.com/u4x97iz6?key=6a5487414458b848a32026ced886c85d'">CLAIM REWARD</button>
             </div>
             <div class="glass" style="padding:24px">
-                <h4 style="margin-bottom:15px; font-weight:bold; color:var(--secondary)">TOP PLAYERS</h4>
-                <div style="display:flex; flex-direction:column; gap:10px">
-                    <div style="display:flex; justify-content:space-between; font-size:0.85rem"><span>Pro_Noob</span><span style="color:var(--primary); font-weight:bold">24,500 XP</span></div>
-                    <div style="display:flex; justify-content:space-between; font-size:0.85rem"><span>PixelMaster</span><span style="color:var(--primary); font-weight:bold">21,200 XP</span></div>
+                <h3 style="margin-bottom:20px">XP FEED</h3>
+                <div id="xp-feed" style="font-size:0.85rem; color:#94a3b8">
+                    <div style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05)">You earned 50 XP in Snake</div>
+                    <div style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05)">Course 'Python AI' completed!</div>
+                    <div style="padding:8px 0">New badge: 'Early Adopter'</div>
                 </div>
             </div>
         </div>
     </main>
 
     <nav class="mobile-nav glass">
-        <a href="index.html" class="nav-link text-blue-500"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></a>
+        <a href="index.html" class="nav-link" style="color:var(--primary)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></a>
         <a href="games.html" class="nav-link"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/></svg></a>
         <a href="arena.html" class="nav-link"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></a>
+        <a href="shop.html" class="nav-link"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.71a2 2 0 0 0 2-1.61l1.71-8.39H5.05"/></svg></a>
         <a href="profile.html" class="nav-link"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
     </nav>
 
@@ -126,16 +146,25 @@
     <script src="assets/js/sound.js"></script>
     <script src="assets/js/effects.js"></script>
     <script src="assets/js/ads.js"></script>
-    <script type="module" src="./index.tsx"></script>
     <script>
-        (function initDailyFact() {
-          const el = document.getElementById('daily-fact');
-          if (window.RandomContent) {
-            el.textContent = window.RandomContent.getFact();
-          } else {
-            setTimeout(initDailyFact, 100);
-          }
-        })();
+        // Simple Carousel Logic
+        let slideIndex = 0;
+        function showSlides() {
+            const slide = document.getElementById('main-carousel');
+            if(!slide) return;
+            slideIndex++;
+            if (slideIndex > 1) slideIndex = 0;
+            slide.style.transform = `translateX(-${slideIndex * 100}%)`;
+            setTimeout(showSlides, 5000);
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            showSlides();
+            // Safe access to RandomContent
+            const factEl = document.getElementById('daily-fact');
+            if (factEl && window.RandomContent) {
+                factEl.textContent = window.RandomContent.getFact();
+            }
+        });
     </script>
     <script src="https://pl28370848.effectivegatecpm.com/61/16/6f/61166f9730629bd7ee7d7ae6e111ba88.js"></script>
 <script type="module" src="/index.tsx"></script>

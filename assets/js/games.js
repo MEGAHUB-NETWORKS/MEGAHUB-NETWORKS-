@@ -31,16 +31,24 @@ window.Games = {
 
   launch(id) {
     this.current = id;
-    document.getElementById('game-selection').classList.add('hidden');
-    document.getElementById('game-player').classList.remove('hidden');
-    document.getElementById('game-title').textContent = id.toUpperCase();
+    const sel = document.getElementById('game-selection');
+    const player = document.getElementById('game-player');
+    if (sel) sel.classList.add('hidden');
+    if (player) player.classList.remove('hidden');
+    
+    const title = document.getElementById('game-title');
+    if (title) title.textContent = id.toUpperCase();
+    
     this.canvas = document.getElementById('main-canvas');
-    this.ctx = this.canvas.getContext('2d');
-    this.start();
+    if (this.canvas) {
+      this.ctx = this.canvas.getContext('2d');
+      this.start();
+    }
   },
 
   start() {
     this.stop();
+    if (!this.canvas) return;
     this.canvas.style.display = 'block';
     if (this.current === 'snake') this.runSnake();
     if (this.current === 'skribbl') this.runSkribbl();
@@ -49,10 +57,12 @@ window.Games = {
 
   stop() {
     if (this.interval) clearInterval(this.interval);
-    this.canvas.onclick = null;
-    this.canvas.onmousemove = null;
-    this.canvas.onmousedown = null;
-    this.canvas.onmouseup = null;
+    if (this.canvas) {
+      this.canvas.onclick = null;
+      this.canvas.onmousemove = null;
+      this.canvas.onmousedown = null;
+      this.canvas.onmouseup = null;
+    }
   },
 
   runSnake() {
@@ -77,7 +87,8 @@ window.Games = {
       this.ctx.fillStyle='#000'; this.ctx.fillRect(0,0,400,400);
       this.ctx.fillStyle='#3b82f6'; s.forEach(p=>this.ctx.fillRect(p.x*20, p.y*20, 18, 18));
       this.ctx.fillStyle='#ef4444'; this.ctx.fillRect(f.x*20, f.y*20, 18, 18);
-      document.getElementById('game-stats').textContent = `SCORE: ${score}`;
+      const stats = document.getElementById('game-stats');
+      if (stats) stats.textContent = `SCORE: ${score}`;
     }, 100);
   },
 
@@ -95,7 +106,7 @@ window.Games = {
       this.ctx.stroke(); this.ctx.beginPath();
       this.ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
     };
-    MegaHub.notify("DRAW THE WORD: 'ROBOT'");
+    if (window.MegaHub) window.MegaHub.notify("DRAW THE WORD: 'ROBOT'");
   },
 
   runAim() {
@@ -113,23 +124,35 @@ window.Games = {
       this.ctx.fillStyle='#000'; this.ctx.fillRect(0,0,400,400);
       this.ctx.fillStyle='#22d3ee'; this.ctx.beginPath();
       this.ctx.arc(target.x, target.y, 20, 0, Math.PI*2); this.ctx.fill();
-      document.getElementById('game-stats').textContent = `HITS: ${score}`;
+      const stats = document.getElementById('game-stats');
+      if (stats) stats.textContent = `HITS: ${score}`;
     }, 16);
   },
 
   gameOver(score) {
     this.stop();
     const ov = document.getElementById('game-overlay');
-    ov.style.display = 'flex';
-    ov.innerHTML = `<h2>GAME OVER</h2><p>SCORE: ${score}</p><button class="btn btn-primary" onclick="Games.start()">REPLAY</button>`;
-    MegaHub.addCoins(Math.floor(score/2));
-    MegaHub.addXP(100);
+    if (ov) {
+      ov.style.display = 'flex';
+      ov.innerHTML = `<h2>GAME OVER</h2><p>SCORE: ${score}</p><button class="btn btn-primary" onclick="Games.start()">REPLAY</button>`;
+    }
+    if (window.MegaHub) {
+      window.MegaHub.addCoins(Math.floor(score/2));
+      window.MegaHub.addXP(100);
+    }
   },
 
   exit() {
     this.stop();
-    document.getElementById('game-selection').classList.remove('hidden');
-    document.getElementById('game-player').classList.add('hidden');
+    const sel = document.getElementById('game-selection');
+    const player = document.getElementById('game-player');
+    if (sel) sel.classList.remove('hidden');
+    if (player) player.classList.add('hidden');
   }
 };
-window.onload = () => Games.init();
+
+if (document.readyState === 'complete') {
+  window.Games.init();
+} else {
+  window.addEventListener('load', () => window.Games.init());
+}

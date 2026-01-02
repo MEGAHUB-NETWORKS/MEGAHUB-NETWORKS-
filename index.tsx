@@ -484,9 +484,21 @@ const App = () => {
   );
 };
 
-// Start application
-window.addEventListener('DOMContentLoaded', () => {
-  const root = createRoot(document.getElementById('root')!);
-  root.render(<App />);
-  console.log("%cMEGAHUB NETWORKS %cONLINE", "color: #3b82f6; font-weight: 900; font-size: 20px;", "color: #10b981; font-weight: 900; font-size: 20px;");
-});
+// --- INITIALIZATION ---
+const initApp = () => {
+  const container = document.getElementById('root');
+  if (container) {
+    const root = createRoot(container);
+    root.render(<App />);
+    console.log("%cMEGAHUB NETWORKS %cONLINE", "color: #3b82f6; font-weight: 900; font-size: 20px;", "color: #10b981; font-weight: 900; font-size: 20px;");
+  } else {
+    console.error("Critical Failure: Root node not found.");
+  }
+};
+
+// Use document.readyState check to handle deferred execution in ESM
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}

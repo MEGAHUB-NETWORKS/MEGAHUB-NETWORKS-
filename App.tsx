@@ -11,8 +11,16 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const fetchTagline = async () => {
+      // Safely access API_KEY which is injected by the environment
+      const apiKey = typeof process !== 'undefined' ? process.env.API_KEY : '';
+      
+      if (!apiKey) {
+        setIsLoading(false);
+        return;
+      }
+
       try {
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+        const ai = new GoogleGenAI({ apiKey });
         const response = await ai.models.generateContent({
           model: 'gemini-3-flash-preview',
           contents: 'Write a powerful, short, futuristic 5-8 word tagline for a high-tech infrastructure company named "MEGAHUB NETWORKS". Do not include the name of the company in the tagline.',
@@ -53,7 +61,7 @@ const App: React.FC = () => {
           {/* Main Title */}
           <div className="mt-8 mb-4 relative">
              <motion.h1 
-                className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white font-heading"
+                className="text-5xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white font-heading"
                 initial={{ letterSpacing: '0.2em', opacity: 0 }}
                 animate={{ letterSpacing: '-0.02em', opacity: 1 }}
                 transition={{ duration: 1.5, ease: "circOut" }}
@@ -105,14 +113,14 @@ const App: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 2, duration: 1 }}
-            className="flex flex-col md:flex-row items-center gap-4"
+            className="flex flex-col md:flex-row items-center gap-4 w-full max-w-md"
           >
             <input 
               type="email" 
-              placeholder="Enter your email for early access" 
-              className="px-6 py-4 rounded-xl bg-slate-900/50 border border-slate-700/50 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 w-full md:w-80 backdrop-blur-md transition-all duration-300 placeholder:text-slate-600"
+              placeholder="Enter email for early access" 
+              className="px-6 py-4 rounded-xl bg-slate-900/50 border border-slate-700/50 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 w-full backdrop-blur-md transition-all duration-300 placeholder:text-slate-600"
             />
-            <button className="w-full md:w-auto px-8 py-4 bg-white text-slate-950 font-bold rounded-xl hover:bg-cyan-50 hover:scale-105 transition-all duration-300 shadow-xl active:scale-95">
+            <button className="w-full md:w-auto px-8 py-4 bg-white text-slate-950 font-bold rounded-xl hover:bg-cyan-50 hover:scale-105 transition-all duration-300 shadow-xl active:scale-95 whitespace-nowrap">
               Notify Me
             </button>
           </motion.div>
@@ -125,9 +133,9 @@ const App: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.4 }}
           transition={{ delay: 2.5 }}
-          className="text-xs tracking-widest text-slate-500"
+          className="text-[10px] md:text-xs tracking-widest text-slate-500 uppercase"
         >
-          &copy; {new Date().getFullYear()} MEGAHUB NETWORKS. GLOBAL INFRASTRUCTURE REIMAGINED.
+          &copy; {new Date().getFullYear()} MEGAHUB NETWORKS. Global Infrastructure Reimagined.
         </motion.p>
       </footer>
     </div>

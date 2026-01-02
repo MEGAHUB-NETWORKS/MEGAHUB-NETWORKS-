@@ -40,3 +40,26 @@ const HubLogo: React.FC = () => {
           animate={{ scale: 1 }}
           transition={{ delay: 1.5, type: "spring" }}
         />
+        
+        {/* Network Connections */}
+        <motion.path 
+          d="M50 25 L50 10 M50 75 L50 90 M25 50 L10 50 M75 50 L90 50"
+          stroke="url(#hubGrad)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+        />
+        
+        {/* Secondary Dots */}
+        <motion.circle cx="50" cy="10" r="2" fill="#22d3ee" animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 2, delay: 0 }} />
+        <motion.circle cx="50" cy="90" r="2" fill="#22d3ee" animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 2, delay: 0.5 }} />
+        <motion.circle cx="10" cy="50" r="2" fill="#22d3ee" animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 2, delay: 1 }} />
+        <motion.circle cx="90" cy="50" r="2" fill="#22d3ee" animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 2, delay: 1.5 }} />
+      </svg>
+    </motion.div>
+  );
+};
+
+export default HubLogo;
